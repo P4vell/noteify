@@ -1,8 +1,13 @@
-import { ReactNode, ReactElement } from "react";
+"use client"
+
+import { ReactNode, ReactElement, useEffect } from "react";
+import { useSession, signIn } from "next-auth/react";
 import { AiFillGithub } from "react-icons/ai";
 import { Container } from "../shared/Container";
+import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "../ui/Button";
+import { toast } from "sonner";
 
 type AuthFormProps = {
   title: string;
@@ -17,6 +22,17 @@ export const AuthForm = ({
   children,
   footer,
 }: AuthFormProps) => {
+  const session = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      toast.success("Welcome back!");
+      router.push("/dashboard");
+      router.refresh();
+    }
+  }, [session.status, router]);
+
   return (
     <Container className="mt-28 sm:mt-40">
       <div className="w-full max-w-[450px] bg-white space-y-6 px-4 py-8 rounded-xl shadow-xl mx-auto">
@@ -37,14 +53,22 @@ export const AuthForm = ({
         </div>
 
         <div className="flex flex-col gap-3">
-          <Button variant="outline" className="relative">
+          <Button
+            variant="outline"
+            className="relative"
+            onClick={() => signIn("google")}
+          >
             <FcGoogle
               size={24}
               className="absolute left-4 top-1/2 -translate-y-1/2"
             />
             <span>Continue with Google</span>
           </Button>
-          <Button variant="outline" className="relative">
+          <Button
+            variant="outline"
+            className="relative"
+            onClick={() => signIn("github")}
+          >
             <AiFillGithub
               size={24}
               className="absolute left-4 top-1/2 -translate-y-1/2"

@@ -9,12 +9,16 @@ import {
   FormMessage,
 } from "../ui/Form";
 import { SignupCredentials, signupSchema } from "@/lib/schemas/signup";
+import { useMutation } from "react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { AuthForm } from "./AuthForm";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
+import { toast } from "sonner";
 import Link from "next/link";
+import axios from "axios";
 
 export const SignupForm = () => {
   const form = useForm<SignupCredentials>({
@@ -23,6 +27,21 @@ export const SignupForm = () => {
       email: "",
       name: "",
       password: "",
+    },
+  });
+  const router = useRouter();
+
+  const { mutate: signupHandler, isLoading } = useMutation({
+    mutationFn: async (crendentials: SignupCredentials) => {
+      const { data } = await axios.post("/api/signup", crendentials);
+      return data;
+    },
+    onSuccess: () => {
+      toast.success("Your account has been created!");
+      router.push("/login");
+    },
+    onError: () => {
+      toast.error("Something went wrong, please try again");
     },
   });
 
@@ -45,7 +64,10 @@ export const SignupForm = () => {
       footer={footer}
     >
       <Form {...form}>
-        <form className="space-y-4">
+        <form
+          className="space-y-4"
+          onSubmit={form.handleSubmit((data) => signupHandler(data))}
+        >
           <FormField
             control={form.control}
             name="email"
@@ -89,7 +111,7 @@ export const SignupForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
+          <Button type="submit" isLoading={isLoading} className="w-full">
             Sign up
           </Button>
         </form>

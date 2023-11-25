@@ -9,11 +9,13 @@ import {
   FormMessage,
 } from "../ui/Form";
 import { LoginCredentials, loginSchema } from "@/lib/schemas/login";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthForm } from "./AuthForm";
 import { Button } from "../ui/Button";
+import { signIn } from "next-auth/react";
 import { Input } from "../ui/Input";
+import { toast } from "sonner";
 import Link from "next/link";
 
 export const LoginForm = () => {
@@ -24,6 +26,20 @@ export const LoginForm = () => {
       password: "",
     },
   });
+
+  const loginHandler: SubmitHandler<LoginCredentials> = async (credentials) => {
+    try {
+      const res = await signIn("credentials", {
+        ...credentials,
+        redirect: false,
+      });
+      if (res?.error) {
+        toast.error(res.error);
+      }
+    } catch {
+      toast.error("Something went wrong, please try again");
+    }
+  };
 
   const footer = (
     <>
@@ -44,7 +60,7 @@ export const LoginForm = () => {
       footer={footer}
     >
       <Form {...form}>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={form.handleSubmit(loginHandler)}>
           <FormField
             control={form.control}
             name="email"
@@ -75,7 +91,11 @@ export const LoginForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
+          <Button
+            type="submit"
+            isLoading={form.formState.isSubmitting}
+            className="w-full"
+          >
             Log in
           </Button>
         </form>
