@@ -98,7 +98,7 @@ export const CreateNoteButton = () => {
               )}
             />
             <Button type="submit" isLoading={isLoading} className="w-full">
-              Create form
+              Create note
             </Button>
           </form>
         </Form>
