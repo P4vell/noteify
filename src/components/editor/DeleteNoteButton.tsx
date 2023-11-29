@@ -32,14 +32,14 @@ export const DeleteNoteButton = ({ noteId }: DeleteNoteButtonProps) => {
 
   return (
     <Button
-      variant="ghost"
+      variant="destructive"
       size="sm"
-      className="w-full justify-start"
       isLoading={isLoading}
       onClick={() => deleteNoteHandler()}
+      aria-label="Delete note"
     >
-      <Trash2 className="w-4 h-4 mr-1.5" />
-      <span>Delete</span>
+      <Trash2 className="w-4 h-4 sm:mr-1.5" />
+      <span className="hidden sm:inline">Delete note</span>
     </Button>
   );
 };

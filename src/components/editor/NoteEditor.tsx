@@ -1,11 +1,11 @@
 "use client";
 
-import { EditorOptionsButton } from "./EditorOptionsButton";
 import { PublishButton } from "./PublishButton";
 import { useSession } from "next-auth/react";
 import { Container } from "../shared/Container";
 import { Editor } from "./Editor";
 import { Note } from "@prisma/client";
+import { DeleteNoteButton } from "./DeleteNoteButton";
 
 type NoteEditorProps = {
   note: Note;
@@ -27,7 +27,7 @@ export const NoteEditor = ({ note, isEditable }: NoteEditorProps) => {
 
           <div className="flex items-center gap-2">
             <PublishButton noteId={id} isPublished={isPublished} />
-            <EditorOptionsButton noteId={id} />
+            <DeleteNoteButton noteId={id} />
           </div>
         </div>
       ) : null}
