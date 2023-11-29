@@ -16,11 +16,12 @@ Project is created with:
 
 - Next.js
 - TypeScript
+- TailwindCSS
 - Prisma
 - MongoDB
 - NextAuth
 - React Query
-- Shadcn
+- Shadcn/ui
 
 ## Setup
 
@@ -34,7 +35,6 @@ $ git clone https://github.com/P4vell/noteify.git
 $ cd noteify
 
 # Fill .env variables
-
 DATABASE_URL=""
 NEXTAUTH_SECRET=""
 GOOGLE_CLIENT_ID=""
