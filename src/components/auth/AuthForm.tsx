@@ -7,7 +7,6 @@ import { Container } from "../shared/Container";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "../ui/Button";
-import { toast } from "sonner";
 
 type AuthFormProps = {
   title: string;
@@ -27,7 +26,6 @@ export const AuthForm = ({
 
   useEffect(() => {
     if (session.status === "authenticated") {
-      toast.success("Welcome back!");
       router.push("/dashboard");
       router.refresh();
     }
