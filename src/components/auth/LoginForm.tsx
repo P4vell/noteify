@@ -11,6 +11,7 @@ import {
 import { LoginCredentials, loginSchema } from "@/lib/schemas/login";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { AuthForm } from "./AuthForm";
 import { Button } from "../ui/Button";
 import { signIn } from "next-auth/react";
@@ -26,6 +27,7 @@ export const LoginForm = () => {
       password: "",
     },
   });
+  const router = useRouter();
 
   const loginHandler: SubmitHandler<LoginCredentials> = async (credentials) => {
     try {
@@ -33,6 +35,9 @@ export const LoginForm = () => {
         ...credentials,
         redirect: false,
       });
+      if (res?.ok && !res.error) {
+        router.push("/dashboard");
+      }
       if (res?.error) {
         toast.error(res.error);
       }
