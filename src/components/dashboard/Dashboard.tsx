@@ -3,6 +3,8 @@
 import { CreateNoteButton } from "./CreateNoteButton";
 import { EmptyState } from "./EmptyState";
 import { Container } from "../shared/Container";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useQuery } from "react-query";
 import { NoteCard } from "./NoteCard";
 import { Skeleton } from "../ui/Skeleton";
@@ -14,6 +16,11 @@ export const Dashboard = () => {
     const { data } = await axios.get("/api/notes");
     return data as Note[];
   });
+  const router = useRouter();
+
+  useEffect(() => {
+    router.refresh();
+  }, [router]);
 
   return (
     <Container>

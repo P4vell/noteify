@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
 import { ReactNode, ReactElement, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { AiFillGithub } from "react-icons/ai";
-import { Container } from "../shared/Container";
 import { useRouter } from "next/navigation";
+import { Container } from "../shared/Container";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "../ui/Button";
 
@@ -25,11 +25,10 @@ export const AuthForm = ({
   const router = useRouter();
 
   useEffect(() => {
-    if (session.status === "authenticated") {
+    if (session?.status === "authenticated") {
       router.push("/dashboard");
-      router.refresh();
     }
-  }, [session.status, router]);
+  }, [session?.status, router]);
 
   return (
     <Container className="mt-28 sm:mt-40">
@@ -54,7 +53,7 @@ export const AuthForm = ({
           <Button
             variant="outline"
             className="relative"
-            onClick={() => signIn("google")}
+            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
           >
             <FcGoogle
               size={24}
@@ -65,7 +64,7 @@ export const AuthForm = ({
           <Button
             variant="outline"
             className="relative"
-            onClick={() => signIn("github")}
+            onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
           >
             <AiFillGithub
               size={24}
